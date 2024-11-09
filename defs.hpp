@@ -1,11 +1,13 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#include "enums.h"
+using namespace std;
+
+#include "enums.hpp"
 #include <array>
 
 // Map the corner positions to facelet positions.
-std::array<std::array<int, 3>, 8> cornerFacelet = {{
+array<array<int, 3>, 8> cornerFacelet = {{
                  {U9, R1, F3}, {U7, F1, L3},
                  {U1, L1, B3}, {U3, B1, R3},
                  {D3, F9, R7}, {D1, L9, F7}, 
@@ -13,7 +15,7 @@ std::array<std::array<int, 3>, 8> cornerFacelet = {{
 }};
 
 // Map the edge positions to facelet positions.
-std::array<std::array<int, 2>, 12> edgeFacelet = {{
+array<array<int, 2>, 12> edgeFacelet = {{
                 {U6, R2}, {U8, F2}, {U4, L2},
                 {U2, B2}, {D6, R8}, {D2, F8},
                 {D4, L8}, {D8, B8}, {F6, R4}, 
@@ -21,7 +23,7 @@ std::array<std::array<int, 2>, 12> edgeFacelet = {{
 }};
 
 // Map the corner positions to facelet colors.
-std::array<std::array<int, 3>, 8> cornerColor = {{
+array<array<int, 3>, 8> cornerColor = {{
                 {U, R, F}, {U, F, L}, 
                 {U, L, B}, {U, B, R},
                 {D, F, R}, {D, L, F}, 
@@ -29,7 +31,7 @@ std::array<std::array<int, 3>, 8> cornerColor = {{
 }};
 
 // Map the edge positions to facelet colors.
-std::array<std::array<int, 2>, 12> edgeColor = {{
+array<array<int, 2>, 12> edgeColor = {{
              {U, R}, {U, F}, {U, L}, 
              {U, B}, {D, R}, {D, F},
              {D, L}, {D, B}, {F, R}, 
