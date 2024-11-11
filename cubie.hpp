@@ -26,9 +26,8 @@ public:
 
     void multiply_edge(CubieCube *other);
     void multiply_corner(CubieCube *other);
-    void InverseCO(int co);
-    void move(int move);
-    int getCOCoord();
+    void InverseEP(int co);    void move(int move);
+    int getEPCoord();
 };
 
 #endif // CUBIE_HPP
