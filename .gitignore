@@ -1,1 +1,5 @@
 CubiCube.pas
+build/
+TwoPhase.m
+test.exe
+main.exe

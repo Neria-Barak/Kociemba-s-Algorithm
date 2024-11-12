@@ -2,10 +2,10 @@
 #include <iostream>
 
 // Constructor with parameters
-CubieCube::CubieCube(std::array<int, 8> co,
-                     std::array<int, 8> cp,
-                     std::array<int, 12> eo,
-                     std::array<int, 12> ep)
+CubieCube::CubieCube(std::array<int, N_CORNERS> co,
+                     std::array<int, N_CORNERS> cp,
+                     std::array<int, N_EDGES> eo,
+                     std::array<int, N_EDGES> ep)
     : co(co), cp(cp), eo(eo), ep(ep)
 {
 
@@ -16,10 +16,10 @@ CubieCube::CubieCube(std::array<int, 8> co,
 // Default constructor
 CubieCube::CubieCube()
 {
-    this->co = {0,0,0,0,0,0,0,0};
-    this->cp = {0,0,0,0,0,0,0,0};
-    this->eo = {0,0,0,0,0,0,0,0,0,0,0,0};
-    this->ep = {0,0,0,0,0,0,0,0,0,0,0,0};
+    this->co = {0, 0, 0, 0, 0, 0, 0, 0};
+    this->cp = {0, 0, 0, 0, 0, 0, 0, 0};
+    this->eo = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    this->ep = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     cc1 = new coordCubePhase1(this->co, this->eo, this->ep);
     cc2 = new coordCubePhase2(this->cp, this->ep, this->ep);
@@ -28,10 +28,10 @@ CubieCube::CubieCube()
 // Multiply edges
 void CubieCube::multiply_edge(CubieCube *other)
 {
-    std::array<int, 12> eoTemp{};
-    std::array<int, 12> epTemp{};
+    std::array<int, N_EDGES> eoTemp{};
+    std::array<int, N_EDGES> epTemp{};
 
-    for (int e = 0; e < 12; e++)
+    for (int e = 0; e < N_EDGES; e++)
     {
         epTemp[e] = this->ep[other->ep[e]];
         eoTemp[e] = (this->eo[other->ep[e]] + other->eo[e]) % 2;
@@ -50,10 +50,10 @@ void CubieCube::multiply_edge(CubieCube *other)
 // Multiply corners
 void CubieCube::multiply_corner(CubieCube *other)
 {
-    std::array<int, 8> coTemp{};
-    std::array<int, 8> cpTemp{};
+    std::array<int, N_CORNERS> coTemp{};
+    std::array<int, N_CORNERS> cpTemp{};
 
-    for (int c = 0; c < 8; c++)
+    for (int c = 0; c < N_CORNERS; c++)
     {
         cpTemp[c] = this->cp[other->cp[c]];
         int oriThis = this->co[other->cp[c]];
@@ -84,90 +84,146 @@ void CubieCube::multiply_corner(CubieCube *other)
     cc2->setCornerPerm(cp);
 }
 
-// Inverse eorner permutation
-void CubieCube::InverseEP(int epVal) {
-    array<int, 12> edges;
-    array<bool, 12> used;
+// 1*1! + 1*2! + 3*3! + 0*4! + 1*5! + 1*6! + 4*7! = 21021 -> {1, 1, 3, 0, 1, 1, 4} -> {DFR, UFL, ULB, URF, DRB, DLF, DBL, UBR}
+// TESTED AND CORRECT
+void CubieCube::InvCP(int cpVal)
+{
+    array<bool, N_CORNERS> used;
+    array<int, N_CORNERS> order;
 
-    for (int i = 11; i >= 0; i--) {
-        edges[i] = epVal % (12 - i);
-        epVal /= (12 - i);
+    for (int i = URF; i <= DRB; i++)
+    {
+        used[i] = false;
+        order[i] = cpVal % (i + 1);
+        cpVal /= i + 1;
+    }
+    for (int i = DRB; i >= URF; i--)
+    {
+        int k = DRB;
+        while (used[k])
+            k--;
+        while (order[i] > 0)
+        {
+            order[i]--;
+            do
+            {
+                k--;
+            } while (used[k]);
+        }
+        this->cp[i] = k;
+        used[k] = true;
+    }
+}
+// TESTED AND CORRECT
+void CubieCube::InvCO(int coVal)
+{
+    int parity = 0;
+    for (int c = DRB - 1; c >= URF; c--)
+    {
+        parity += coVal % 3;
+        this->co[c] = coVal % 3;
+        coVal /= 3;
+    }
+    parity %= 3;
+    switch (parity)
+    {
+    case 0:
+        this->co[DRB] = 0;
+        break;
+    case 1:
+        this->co[DRB] = 2;
+        break;
+    case 2:
+        this->co[DRB] = 1;
+        break;
+    }
+}
 
-        // Find the correct edge based on available values
-        int count = 0;
-        for (int j = 0; j < 12; j++) {
-            if (!used[j]) {
-                if (count == edges[i]) {
-                    edges[i] = j;
-                    used[j] = true;
-                    break;
+void CubieCube::InvEO(int eoVal)
+{
+    int parity = 0;
+    for (int e = BR - 1; e >= UR; e--)
+    {
+        parity += eoVal % 2;
+        this->eo[e] = eoVal % 2;
+        e /= 2;
+    }
+    this->eo[BR] = parity % 2;
+}
+
+void CubieCube::InvEP(int epVal)
+{
+    array<bool, N_EDGES> used;
+    array<int, N_EDGES> order;
+
+    for (int i = UR; i <= BR; i++)
+    {
+        used[i] = false;
+        order[i] = epVal % (i + 1);
+        epVal /= i + 1;
+    }
+    for (int i = BR; i >= UR; i--)
+    {
+        int k = BR;
+        while (used[k])
+            k--;
+        while (order[i] > 0)
+        {
+            order[i]--;
+            do
+            {
+                k--;
+            } while (used[k]);
+        }
+        this->ep[i] = k;
+        used[k] = true;
+    }
+}
+
+int C(int n, int k)
+{
+    if (k > n)
+        return 0;
+    if (k == 0 || n == k)
+        return 1;
+    return C(n - 1, k - 1) + C(n - 1, k);
+}
+
+void CubieCube::InvUDSlice(int udsVal)
+{
+    array<bool, N_EDGES> occupied;
+    for (int n = 0; n < N_EDGES; n++) {
+        n = 11;
+        int k = 3;
+        occupied[n] = false;
+        while (k >= 0) {
+            int v = C(n, k);
+            if (udsVal < v) {
+                k--;
+                occupied[n] = true;
+            }
+            else {
+                udsVal -= v;
+            }
+            n--;
+        }
+        int udSliceEdge = FR;
+        for (int e = UR; e <= BR; e++) {
+            if (occupied[e]) {
+                for (int i = UR; i <= BR; i++) {
+                    if (this->ep[i] == udSliceEdge) {
+                        this->ep[i] = this->ep[e];
+                        break;
+                    }
+                    this->ep[e] = udSliceEdge;
+                    if (udSliceEdge < BR) {
+                        udSliceEdge++;
+                    } 
                 }
-                count++;
             }
         }
     }
-
-    this->cc2->setEdgePerm(edges);  // Assuming setEdgePerm is a method to apply an edge permutation
 }
-
-
-
-// Inverse edge orientation
-// void CubieCube::InverseEO(int eoVal) {
-//     int parity = 0;
-//     for (int e = 11; e >= 0; e--) {
-//         this->eo[e] = eoVal % 2;  // Edge orientation is binary (0 or 1)
-//         parity += this->eo[e];
-//         eoVal /= 2;
-//     }
-//     // Last edge orientation is determined by parity
-//     this->eo[11] = (parity % 2 == 0) ? 0 : 1;
-
-//     this->cc1->setEdgeOri(this->eo);  // Assuming setEdgeOri is a method to apply the edge orientation
-// }
-
-
-// Inverse corner permutation
-// void CubieCube::InverseCP(int cpVal) {
-//     array<int, 8> corners;
-//     array<bool, 8> used;
-
-//     for (int i = 7; i >= 0; i--) {
-//         corners[i] = cpVal % (8 - i);
-//         cpVal /= (8 - i);
-
-//         // Find the correct corner based on available values
-//         int count = 0;
-//         for (int j = 0; j < 8; j++) {
-//             if (!used[j]) {
-//                 if (count == corners[i]) {
-//                     corners[i] = j;
-//                     used[j] = true;
-//                     break;
-//                 }
-//                 count++;
-//             }
-//         }
-//     }
-//     this->cp = corners;
-//     this->cc2->setCornerPerm(corners);
-// }
-
-// Inverse corner orientation
-// void CubieCube::InverseCO(int coVal)
-// {
-//     int parity = 0;
-//     for (int c = 7; c >= 0; c--)
-//     {
-//         parity += coVal % 3;
-//         this->co[c] = coVal % 3;
-//         coVal /= 3;
-//     }
-//     this->co[7] = (3 - parity % 3) % 3;
-
-//     cc1->setCornerOri(co);
-// }
-
 
 // Apply move
 void CubieCube::move(int move)
@@ -192,8 +248,24 @@ void CubieCube::move(int move)
     cc2->setUDSlicePhase2(ep);
 }
 
+void CubieCube::multiply(CubieCube *b)
+{
+    this->multiply_corner(b);
+    this->multiply_edge(b);
+}
+
 // Get corner orientation coordinate
 int CubieCube::getEPCoord()
 {
     return this->cc2->ep;
+}
+int CubieCube::getEOCoord() {
+    return this->cc1->eo;
+}
+int CubieCube::getCPCoord()
+{
+    return this->cc2->cp;
+}
+int CubieCube::getCOCoord() {
+    return this->cc1->co;
 }

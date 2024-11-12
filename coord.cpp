@@ -13,9 +13,9 @@ coordCubePhase1::coordCubePhase1(int co,
 }
 
 // constructor
-coordCubePhase1::coordCubePhase1(array<int, 8> co,
-                                 array<int, 12> eo,
-                                 array<int, 12> uds)
+coordCubePhase1::coordCubePhase1(array<int, N_CORNERS> co,
+                                 array<int, N_EDGES> eo,
+                                 array<int, N_EDGES> uds)
 {
 
     this->setEdgeOri(eo);
@@ -23,7 +23,7 @@ coordCubePhase1::coordCubePhase1(array<int, 8> co,
     this->setUDSlicePhase1(uds);
 }
 
-void coordCubePhase1::setEdgeOri(array<int, 12> eo)
+void coordCubePhase1::setEdgeOri(array<int, N_EDGES> eo)
 {
     int s = 0;
     // we use base 2 where each bit coresspondes to an edge orientation
@@ -34,7 +34,7 @@ void coordCubePhase1::setEdgeOri(array<int, 12> eo)
     }
     this->eo = s;
 }
-void coordCubePhase1::setCornerOri(array<int, 8> co)
+void coordCubePhase1::setCornerOri(array<int, N_CORNERS> co)
 {
     int s = 0;
     // we use base 3 where each bit coresspondes to an edge orientation
@@ -56,9 +56,9 @@ int C(int n, int k)
     return C(n - 1, k - 1) + C(n - 1, k);
 }
 
-int coordCubePhase1::getUDSliceCoord(array<int, 12> ep)
+int coordCubePhase1::getUDSliceCoord(array<int, N_EDGES> ep)
 {
-    array<bool, 12> occupied = {false};
+    array<bool, N_EDGES> occupied = {false};
     for (int ed = UR; ed <= BR; ed++)
     {
         if (ep[ed] >= FR)
@@ -86,7 +86,7 @@ int coordCubePhase1::getUDSliceCoord(array<int, 12> ep)
     return s;
 }
 
-void coordCubePhase1::setUDSlicePhase1(array<int, 12> ep)
+void coordCubePhase1::setUDSlicePhase1(array<int, N_EDGES> ep)
 {
     this->uds = coordCubePhase1::getUDSliceCoord(ep);
 }
@@ -101,14 +101,14 @@ coordCubePhase2::coordCubePhase2(int cp,
     this->uds = uds;
 }
 
-coordCubePhase2::coordCubePhase2(array<int, 8> cp, array<int, 12> ep, array<int, 12> uds)
+coordCubePhase2::coordCubePhase2(array<int, N_CORNERS> cp, array<int, N_EDGES> ep, array<int, N_EDGES> uds)
 {
     this->setEdgePerm(ep);
     this->setCornerPerm(cp);
     this->UDSliceCoordSorted(uds);
 }
 
-void coordCubePhase2::setEdgePerm(array<int, 12> ep)
+void coordCubePhase2::setEdgePerm(array<int, N_EDGES> ep)
 {
     int x = 0;
     for (int e1 = BR; e1 > UR; e1--)
@@ -123,7 +123,7 @@ void coordCubePhase2::setEdgePerm(array<int, 12> ep)
     }
     this->ep = x;
 }
-void coordCubePhase2::setCornerPerm(array<int, 8> cp)
+void coordCubePhase2::setCornerPerm(array<int, N_CORNERS> cp)
 {
     int x = 0;
     for (int c1 = DRB; c1 > URF; c1--)
@@ -139,7 +139,7 @@ void coordCubePhase2::setCornerPerm(array<int, 8> cp)
     this->cp = x;
 }
 
-int coordCubePhase2::UDSliceCoordSorted(array<int, 12> ep)
+int coordCubePhase2::UDSliceCoordSorted(array<int, N_EDGES> ep)
 {
     array<int, 4> arr;
     int j = 0;
@@ -171,7 +171,7 @@ int coordCubePhase2::UDSliceCoordSorted(array<int, 12> ep)
     return coordCubePhase1::getUDSliceCoord(ep) * 24 + x;
 }
 
-void coordCubePhase2::setUDSlicePhase2(array<int, 12> ep)
+void coordCubePhase2::setUDSlicePhase2(array<int, N_EDGES> ep)
 {
     this->uds = UDSliceCoordSorted(ep) % 24;
 }

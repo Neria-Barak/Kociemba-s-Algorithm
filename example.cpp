@@ -21,15 +21,15 @@ void readBinaryFile() {
     inFile.close();
 }
 
-int main() {
-    readBinaryFile();
+// int main() {
+//     readBinaryFile();
 
-    // Example output to verify
-    cout << "First row of coMoveTable: ";
-    for (int j = 0; j < N_MOVE; j++) {
-        cout << coMoveTable[0][j] << " ";
-    }
-    cout << endl;
+//     // Example output to verify
+//     cout << "First row of coMoveTable: ";
+//     for (int j = 0; j < N_MOVE; j++) {
+//         cout << coMoveTable[0][j] << " ";
+//     }
+//     cout << endl;
 
-    return 0;
-}
+//     return 0;
+// }

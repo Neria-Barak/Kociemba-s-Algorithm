@@ -5,6 +5,7 @@ using namespace std;
 
 #include "enums.hpp"
 #include <array>
+#include "cubie.hpp"
 
 // Map the corner positions to facelet positions.
 extern array<array<int, 3>, 8> cornerFacelet;
@@ -20,14 +21,14 @@ extern array<array<int, 2>, 12> edgeColor;
 
 #define N_MOVE 18 // number of possible face moves
 // Initialize corner_perm and corner_ori arrays with respective data
-extern array<array<int, 8>, 6> new_corner_perm;
+extern array<array<int, 8>, 18> new_corner_perm;
 
-extern array<array<int, 8>, 6> new_corner_ori;
+extern array<array<int, 8>, 18> new_corner_ori;
 
 // Initialize edge_perm, edge_ori, and edge_ori_adjust arrays with respective data
-extern array<std::array<int, 12>, 6> new_edge_perm;
+extern array<std::array<int, 12>, 18> new_edge_perm;
 
-extern array<array<int, 12>, 6> new_edge_ori;
+extern array<array<int, 12>, 18> new_edge_ori;
 
 #define N_PERM_4 24
 #define N_CHOOSE_8_4 70
@@ -40,12 +41,16 @@ extern array<array<int, 12>, 6> new_edge_ori;
 
 #define N_U_EDGES_PHASE2 1680 // number of different positions of the edges UR, UF, UL and UB in phase 2
 #define N_D_EDGES_PHASE2 1680 // number of different positions of the edges DR, DF, DL and DB in phase 2
-#define N_CORNERS 40320       // 8! corner permutations in phase 2
+#define N_CORNERS_PERM 40320       // 8! corner permutations in phase 2
 #define N_CORNERS_CLASS 2768  // number of equivalence classes concerning symmetry group D4h
 #define N_UD_EDGES 40320      // 8! permutations of the edges in the U-face and D-face in phase 2
 
 #define N_SYM 48          // number of cube symmetries of full group Oh
 #define N_SYM_D4h 16      // Number of symmetries of subgroup D4h
 #define FOLDER "twophase" // Folder name for generated tables
+
+#define N_EDGES 12
+#define N_CORNERS 8
+#define N_UDS 4
 
 #endif
