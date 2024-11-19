@@ -5,6 +5,7 @@
 #include "defs.hpp"
 #include "enums.hpp"
 #include "coord.hpp"
+#include <vector>
 
 // DO NOT REMOVE
 class coordCubePhase1;
@@ -45,6 +46,11 @@ public:
     void InvCP(int cpVal);
     void InvEP(int epVal);
     void InvUDSlice(int udsVal);
+
+    void applyScramble(vector<int> scramble);
 };
+
+// Combination function C(n, k)
+int C(int n, int k);
 
 #endif // CUBIE_HPP

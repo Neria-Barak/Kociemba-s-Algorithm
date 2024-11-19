@@ -8,10 +8,10 @@ CXXFLAGS = -Wall -std=c++11 -g -o3
 TARGET = main
 
 # Source files
-SRC = coord.cpp cubie.cpp defs.cpp main.cpp
+SRC = coord.cpp cubie.cpp defs.cpp main.cpp prun.cpp moves.cpp solver.cpp tables.cpp
 
 # Header files
-HEADERS = coord.hpp cubie.hpp defs.hpp enums.hpp
+HEADERS = coord.hpp cubie.hpp defs.hpp enums.hpp prun.hpp moves.hpp solver.hpp tables.hpp
 
 # Object directory
 OBJ_DIR = build

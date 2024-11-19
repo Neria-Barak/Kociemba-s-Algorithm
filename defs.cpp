@@ -9,6 +9,8 @@ std::array<std::array<int, 3>, N_CORNERS> cornerColor = {{{U, R, F}, {U, F, L}, 
 
 std::array<std::array<int, 2>, N_EDGES> edgeColor = {{{U, R}, {U, F}, {U, L}, {U, B}, {D, R}, {D, F}, {D, L}, {D, B}, {F, R}, {F, L}, {B, L}, {B, R}}};
 
+std::array<int, N_MOVE> inv_move = {U3M, U2M, U1M, R3M, R2M, R1M, F3M, F2M, F1M, D3M, D2M, D1M, L3M, L2M, L1M, B3M, B2M, B1M};
+
 std::array<std::array<int, N_CORNERS>, 18> new_corner_perm = {{
     {UBR, URF, UFL, ULB, DFR, DLF, DBL, DRB}, // U
     {0, 0, 0, 0, 0, 0, 0, 0}, // U2
@@ -41,19 +43,19 @@ std::array<std::array<int, N_CORNERS>, 18> new_corner_ori = {{
     {0, 0, 0, 0, 0, 0, 0, 0}, // U3
     {2, 0, 0, 1, 1, 0, 0, 2}, // R
     {0, 0, 0, 0, 0, 0, 0, 0}, // R2
-    {0, 0, 0, 0, 0, 0, 0, 0}, // R3
+    {1, 0, 0, 2, 2, 0, 0, 1}, // R3
     {1, 2, 0, 0, 2, 1, 0, 0}, // F
     {0, 0, 0, 0, 0, 0, 0, 0}, // F2
-    {0, 0, 0, 0, 0, 0, 0, 0}, // F3
+    {2, 1, 0, 0, 1, 2, 0, 0}, // F3
     {0, 0, 0, 0, 0, 0, 0, 0}, // D
-    {0, 0, 0, 0, 0, 0, 0, 0}, // D2
+    {1, 2, 0, 0, 2, 1, 0, 0}, // D2
     {0, 0, 0, 0, 0, 0, 0, 0}, // D3
     {0, 1, 2, 0, 0, 2, 1, 0}, // L
     {0, 0, 0, 0, 0, 0, 0, 0}, // L2
-    {0, 0, 0, 0, 0, 0, 0, 0}, // L3
+    {0, 2, 1, 0, 0, 1, 2, 0}, // L3
     {0, 0, 1, 2, 0, 0, 2, 1}, // B
     {0, 0, 0, 0, 0, 0, 0, 0}, // B2
-    {0, 0, 0, 0, 0, 0, 0, 0}  // B3
+    {0, 0, 2, 1, 0, 0, 1, 2}  // B3
 }};
 
 std::array<std::array<int, N_EDGES>, 18> new_edge_perm = {{
@@ -115,7 +117,3 @@ void init_moves() {
         new_edge_perm[m+2] = cc2->ep;
     }
 }
-
-// int main() {
-//     init_moves();
-// }

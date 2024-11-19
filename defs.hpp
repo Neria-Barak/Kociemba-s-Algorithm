@@ -30,6 +30,8 @@ extern array<std::array<int, 12>, 18> new_edge_perm;
 
 extern array<array<int, 12>, 18> new_edge_ori;
 
+extern array<int, N_MOVE> inv_move;
+
 #define N_PERM_4 24
 #define N_CHOOSE_8_4 70
 
@@ -52,5 +54,7 @@ extern array<array<int, 12>, 18> new_edge_ori;
 #define N_EDGES 12
 #define N_CORNERS 8
 #define N_UDS 4
+
+void init_moves();
 
 #endif

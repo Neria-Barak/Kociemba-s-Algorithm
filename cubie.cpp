@@ -17,9 +17,9 @@ CubieCube::CubieCube(std::array<int, N_CORNERS> co,
 CubieCube::CubieCube()
 {
     this->co = {0, 0, 0, 0, 0, 0, 0, 0};
-    this->cp = {0, 0, 0, 0, 0, 0, 0, 0};
+    this->cp = {URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB};
     this->eo = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    this->ep = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    this->ep = {UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR};
 
     cc1 = new coordCubePhase1(this->co, this->eo, this->ep);
     cc2 = new coordCubePhase2(this->cp, this->ep, this->ep);
@@ -115,8 +115,7 @@ void CubieCube::InvCP(int cpVal)
     }
 }
 // TESTED AND CORRECT
-void CubieCube::InvCO(int coVal)
-{
+void CubieCube::InvCO(int coVal) {
     int parity = 0;
     for (int c = DRB - 1; c >= URF; c--)
     {
@@ -225,13 +224,13 @@ void CubieCube::InvUDSlice(int udsVal)
     }
 }
 
-// Apply move
 void CubieCube::move(int move)
 {
-    auto c = new CubieCube(new_corner_ori[move / 3],
-                           new_corner_perm[move / 3],
-                           new_edge_ori[move / 3],
-                           new_edge_perm[move / 3]);
+    int index = move - (move % 3);
+    auto c = new CubieCube(new_corner_ori[index],
+                           new_corner_perm[index],
+                           new_edge_ori[index],
+                           new_edge_perm[index]);
 
     for (int i = 0; i <= (move % 3); i++)
     {
@@ -268,4 +267,10 @@ int CubieCube::getCPCoord()
 }
 int CubieCube::getCOCoord() {
     return this->cc1->co;
+}
+
+void CubieCube::applyScramble(vector<int> scramble) {
+    for (unsigned int i=0; i<scramble.size(); i++) {
+        this->move(scramble[i]);
+    }
 }

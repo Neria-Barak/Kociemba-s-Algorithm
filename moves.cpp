@@ -1,7 +1,7 @@
 #include "moves.hpp"
 
 using namespace std;
-
+// cp co eo
 
 //TODO:
 // TwistMove: array[0..2187-1,Ux1..Fsx3] of Word;              - DONE
@@ -17,53 +17,55 @@ using namespace std;
 // Edge8PermMove: array[0..40320-1,Ux1..Fsx3] of Word;         - TODO
 
 
-array<array<int, N_MOVE>, 2048> eoMoveTable;
-void generateEOMoveTable() {
-    CubieCube* c = new CubieCube();
-    for (int i = 0; i < 2048; i++) {
-        c->InvEO(i);
-        for (int j = U1M; j <= B3M; j++) {
-            c->move(j);
-            eoMoveTable[i][j] = c->getEOCoord();
-        }
-    }
-}
+// array<array<int, N_MOVE>, 2048> eoMoveTable;
+// void generateEOMoveTable() {
+//     CubieCube* c = new CubieCube();
+//     for (int i = 0; i < 2048; i++) {
+//         c->InvEO(i);
+//         for (int j = U1M; j <= B3M; j++) {
+//             c->move(j);
+//             eoMoveTable[i][j] = c->getEOCoord();
+//         }
+//     }
+// }
 
-array<array<int, N_MOVE>, 2187> coMoveTable;
+array<array<int, N_MOVE>, N_TWIST> coMoveTable2;
 void generateCOMoveTable() {
     CubieCube* c = new CubieCube();
-    for (int i = 0; i < 2187; i++) {
+    for (int i = 0; i < N_TWIST; i++) {
         c->InvCO(i);
         for (int j = U1M; j <= B3M; j++) {
             c->move(j);
-            eoMoveTable[i][j] = c->getCOCoord();
+            coMoveTable2[i][j] = c->getCOCoord();
+            c->move(inv_move[j]);
         }
     }
 }
 
-array<array<int, N_MOVE>, 40320> eoMoveTable;
+array<array<int, N_MOVE>, N_CORNERS_PERM> cpMoveTable2;
 void generateCPMoveTable() {
     CubieCube* c = new CubieCube();
-    for (int i = 0; i < 40320; i++) {
+    for (int i = 0; i < N_CORNERS_PERM; i++) {
         c->InvCP(i);
         for (int j = U1M; j <= B3M; j++) {
             c->move(j);
-            eoMoveTable[i][j] = c->getCPCoord();
+            cpMoveTable2[i][j] = c->getCPCoord();
+            c->move(inv_move[j]);
         }
     }
 }
 
-array<array<int, N_MOVE>, N_FLIP> eoMoveTable;
-void createEPMoveTable() {
-    CubieCube* c = new CubieCube();
-    for (int i = 0; i < N_FLIP; i++) {
-        c->InvEP(i);
-        for (int j = U1M; j <= B3M; j++) {
-            c->move(j);
-            eoMoveTable[i][j] = c->getEPCoord();
-        }
-    }
-}
+// array<array<int, N_MOVE>, N_FLIP> eoMoveTable;
+// void createEPMoveTable() {
+//     CubieCube* c = new CubieCube();
+//     for (int i = 0; i < N_FLIP; i++) {
+//         c->InvEP(i);
+//         for (int j = U1M; j <= B3M; j++) {
+//             c->move(j);
+//             eoMoveTable[i][j] = c->getEPCoord();
+//         }
+//     }
+// }
 
 //+++++++++++++Create Move Table for the UDSliceSorted raw-coordinate+++++++++++
 // procedure CreateUDSliceSortedMoveTable;
@@ -127,26 +129,22 @@ void createEPMoveTable() {
 //   end;
 // end;
 
-// int main() {
-//     cout << "hey" << endl;
+void writeTable() {
+    generateCPMoveTable();
 
-//     // Create CO move table
-//     createEOMoveTable();
+    ofstream outFile("MoveTables/cpMoveTable.bin", ios::binary);
+    if (!outFile) {
+        cerr << "Error opening file for writing." << endl;
+        return;
+    }
 
-//     cout << "hey" << endl;
+    outFile.write(reinterpret_cast<const char*>(cpMoveTable2.data()), N_CORNERS_PERM * N_MOVE * sizeof(int));
+    
+    if (!outFile) {  // Verify that the write operation was successful
+        cerr << "Error writing to file." << endl;
+    } else {
+        cout << "cpMoveTable successfully written to cpMoveTable.bin" << endl;
+    }
 
-//     // Open binary file for writing
-//     ofstream outFile("epMoveTable.bin", ios::binary);
-//     if (!outFile) {
-//         cerr << "Error opening file for writing." << endl;
-//         return 1;
-//     }
-
-//     // Write the entire std::array to the binary file
-//     outFile.write(reinterpret_cast<const char*>(eoMoveTable.data()), N_FLIP * N_MOVE * sizeof(int));
-
-//     outFile.close();
-//     cout << "cpMoveTable successfully written to cpMoveTable.bin" << endl;
-
-//     return 0;
-// }
+    outFile.close();
+}

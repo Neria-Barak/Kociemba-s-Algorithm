@@ -7,4 +7,8 @@
 #include <fstream>
 #include "defs.hpp"
 
+void generateCOMoveTable();
+
+void writeTable();
+
 #endif
