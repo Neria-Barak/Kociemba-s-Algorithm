@@ -13,6 +13,13 @@ CubieCube::CubieCube(std::array<int, N_CORNERS> co,
     cc2 = new coordCubePhase2(cp, ep, ep);
 }
 
+// CubieCube::CubieCube(CubieCube* other) {
+//     this->co = array<int>(other->co);
+//     this->cp = array<int>(other->cp);
+//     this->eo = array<int>(other->eo);
+//     this->ep = array<int>(other->ep);
+// }
+
 // Default constructor
 CubieCube::CubieCube()
 {

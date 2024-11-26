@@ -11,7 +11,8 @@
 #include <fstream>
 #include <array>
 #include <vector>
+#include "misc.hpp"
 
-vector<int> solveCube(CubieCube* cube);
+vector<int> solveCube(CubieCube* cube, unsigned int maxLen);
 
 #endif

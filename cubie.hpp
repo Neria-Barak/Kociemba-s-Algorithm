@@ -32,6 +32,8 @@ public:
 
     CubieCube();
 
+    // CubieCube(CubieCube* other);
+
     void multiply_edge(CubieCube *other);
     void multiply_corner(CubieCube *other);
     void multiply(CubieCube* b);
