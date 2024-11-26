@@ -3,29 +3,43 @@
 using namespace std;
 
 vector<vector<int>> readBinaryFile(string file, int size1, int size2) {
-    // size1 = N_CORNERS_PERM, size2 = N_MOVE
     vector<vector<int>> table;
-    table.resize(size1, vector<int>(size2)); // Allocate memory for table
+    table.resize(size1, vector<int>(size2));
 
-    ifstream inFile(file + ".bin", ios::binary); // Ensure the path is correct
+    ifstream inFile(file + ".bin", ios::binary);
     if (!inFile) {
         cerr << "Error opening file for reading." << endl;
         exit(1);
     }
 
-    for (int i = 0; i < size1; ++i) {
-        inFile.read(reinterpret_cast<char*>(table[i].data()), size2 * sizeof(int));
+    if (size2 == 1) {
+        // Read data into a vector<int>
+        vector<int> p(size1);
+        inFile.read(reinterpret_cast<char*>(p.data()), size1 * sizeof(int));
         if (!inFile) {
-            cerr << "Error reading row " << i << endl;
-            break;
+            cerr << "Error reading data." << endl;
+            exit(1);
+        }
+        // Copy data into table
+        for (int i = 0; i < size1; ++i) {
+            table[i][0] = p[i];
+        }
+    } else {
+        for (int i = 0; i < size1; ++i) {
+            inFile.read(reinterpret_cast<char*>(table[i].data()), size2 * sizeof(int));
+            if (!inFile) {
+                cerr << "Error reading row " << i << endl;
+                break;
+            }
         }
     }
 
     inFile.close();
 
-    cout << "table loaded successfully." << endl;
+    cout << "Table loaded successfully." << endl;
     return table;
 }
+
 
 vector<vector<int>> coMoveTable;
 vector<vector<int>> cpMoveTable;

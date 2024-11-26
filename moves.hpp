@@ -9,6 +9,7 @@
 
 void generateCOMoveTable();
 
-void writeTable();
+void writeCOTable();
+void writeCPTable();
 
 #endif

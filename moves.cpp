@@ -17,17 +17,18 @@ using namespace std;
 // Edge8PermMove: array[0..40320-1,Ux1..Fsx3] of Word;         - TODO
 
 
-// array<array<int, N_MOVE>, 2048> eoMoveTable;
-// void generateEOMoveTable() {
-//     CubieCube* c = new CubieCube();
-//     for (int i = 0; i < 2048; i++) {
-//         c->InvEO(i);
-//         for (int j = U1M; j <= B3M; j++) {
-//             c->move(j);
-//             eoMoveTable[i][j] = c->getEOCoord();
-//         }
-//     }
-// }
+array<array<int, N_MOVE>, 2048> eoMoveTable;
+void generateEOMoveTable() {
+    CubieCube* c = new CubieCube();
+    for (int i = 0; i < 2048; i++) {
+        c->InvEO(i);
+        for (int j = U1M; j <= B3M; j++) {
+            c->move(j);
+            eoMoveTable[i][j] = c->getEOCoord();
+            c->move(inv_move[j]);
+        }
+    }
+}
 
 array<array<int, N_MOVE>, N_TWIST> coMoveTable2;
 void generateCOMoveTable() {
@@ -37,6 +38,7 @@ void generateCOMoveTable() {
         for (int j = U1M; j <= B3M; j++) {
             c->move(j);
             coMoveTable2[i][j] = c->getCOCoord();
+            if (i == 1940 && j == F2M) cout << coMoveTable2[i][j] <<  endl;
             c->move(inv_move[j]);
         }
     }
@@ -129,7 +131,7 @@ void generateCPMoveTable() {
 //   end;
 // end;
 
-void writeTable() {
+void writeCPTable() {
     generateCPMoveTable();
 
     ofstream outFile("MoveTables/cpMoveTable.bin", ios::binary);
@@ -144,6 +146,26 @@ void writeTable() {
         cerr << "Error writing to file." << endl;
     } else {
         cout << "cpMoveTable successfully written to cpMoveTable.bin" << endl;
+    }
+
+    outFile.close();
+}
+
+void writeCOTable() {
+    generateCOMoveTable();
+
+    ofstream outFile("MoveTables/coMoveTable.bin", ios::binary);
+    if (!outFile) {
+        cerr << "Error opening file for writing." << endl;
+        return;
+    }
+
+    outFile.write(reinterpret_cast<const char*>(coMoveTable2.data()), N_TWIST * N_MOVE * sizeof(int));
+    
+    if (!outFile) {  // Verify that the write operation was successful
+        cerr << "Error writing to file." << endl;
+    } else {
+        cout << "coMoveTable successfully written to coMoveTable.bin" << endl;
     }
 
     outFile.close();

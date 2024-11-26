@@ -31,12 +31,13 @@ void buildTable(const string& name, int size, const vector<vector<int>>& move) {
                     if (newIndex >= 0 && newIndex < size && p[newIndex] == -1) {
                         count++;
                         p[newIndex] = depth + 1;
+                        if (newIndex == 1940 && name == "PruningTables/coPruningTable") cout << newIndex << ": " << p[newIndex] << endl;
                     }
                 }
             }
         }
         depth++;
-        cout << depth << " " << count << endl;
+        // cout << depth << " " << count << endl;
     }
     
     // Write the p vector to a binary file

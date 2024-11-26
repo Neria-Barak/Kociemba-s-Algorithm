@@ -88,6 +88,7 @@ void CubieCube::multiply_corner(CubieCube *other)
 // TESTED AND CORRECT
 void CubieCube::InvCP(int cpVal)
 {
+    this->cc2->cp = cpVal;
     array<bool, N_CORNERS> used;
     array<int, N_CORNERS> order;
 
@@ -116,10 +117,12 @@ void CubieCube::InvCP(int cpVal)
 }
 // TESTED AND CORRECT
 void CubieCube::InvCO(int coVal) {
+    this->cc1->co = coVal;
     int parity = 0;
+    
     for (int c = DRB - 1; c >= URF; c--)
     {
-        parity += coVal % 3;
+        parity = parity + (coVal) % 3;
         this->co[c] = coVal % 3;
         coVal /= 3;
     }
@@ -140,6 +143,7 @@ void CubieCube::InvCO(int coVal) {
 
 void CubieCube::InvEO(int eoVal)
 {
+    this->cc1->eo = eoVal;
     int parity = 0;
     for (int e = BR - 1; e >= UR; e--)
     {
@@ -152,6 +156,7 @@ void CubieCube::InvEO(int eoVal)
 
 void CubieCube::InvEP(int epVal)
 {
+    this->cc2->ep = epVal;
     array<bool, N_EDGES> used;
     array<int, N_EDGES> order;
 
