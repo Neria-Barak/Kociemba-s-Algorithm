@@ -12,6 +12,7 @@
 #include <array>
 #include <vector>
 #include "misc.hpp"
+#include <unordered_set>
 
 vector<int> solveCube(CubieCube* cube, unsigned int maxLen);
 
