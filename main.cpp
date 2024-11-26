@@ -105,32 +105,11 @@ void reBuildPruningTables()
 
 int main()
 {
-    // cout << "here" << endl;
-    // init();
-    // reBuildPruningTables();
     init();
-    // for (int i = 1; i < 10; i++)
-    // {
-    //     cout << i << ": " << coPrunTable[i][0] << endl;
-    // }
-    // cout << coPrunTable[1940][0] << endl;
-    // writeCOTable();
-    // writeCPTable();
 
     CubieCube* cc = new CubieCube();
-    // coordCubePhase1* cc1 = new coordCubePhase1(0, 0, 0);
-    // // cout << coPrunTable[324][0] << endl;
-    // // cout << coPrunTable[1940][0] << endl;
-    // // cout << coPrunTable[0][0] << endl;
-    // for(int i=345; i<500; i++) {
-    //     cc->InvCO(i);
-    //     cc1->setCornerOri(cc->co);
-
-    //     cout << (cc1->co == i) << std::endl;
-    // }
 
     vector<int> myScramble = generateScramble(10);
-    // vector<int> myScramble = {F3M, L3M, F2M, L2M, D2M, U2M, F3M, L2M, U2M, B1M};
     cout << ScrambleToString(myScramble) << endl;
     cc->applyScramble(myScramble);
 

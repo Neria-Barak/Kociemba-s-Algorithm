@@ -165,7 +165,3 @@ void coordCubePhase2::setUDSlicePhase2(array<int, N_EDGES> ep)
 {
     this->uds = UDSliceCoordSorted(ep) % 24;
 }
-
-// int main() {
-//     cout << setCornerPerm({DFR, UFL, ULB, URF, DRB, DLF, DBL, UBR}) << endl;
-// }

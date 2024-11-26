@@ -69,68 +69,6 @@ void generateCPMoveTable() {
 //     }
 // }
 
-//+++++++++++++Create Move Table for the UDSliceSorted raw-coordinate+++++++++++
-// procedure CreateUDSliceSortedMoveTable;
-// var c: CubieCube; i,k: Integer; j: TurnAxis;
-// begin
-//   c:= CubieCube.Create;
-//   for i:=0 to 11879 do
-//   begin
-//     if i and $fff = 0 then Application.ProcessMessages;
-//     c.InvUDSliceSortedCoord(i);
-//     for j:= U to Fs do
-//     begin
-//       for k:= 0 to 3 do
-//       begin
-//         c.Move(j);
-//         if k<>3 then UDSliceSortedMove[i,Move(3*Ord(j)+k)]:=c.UDSliceSortedCoord;
-//       end;
-//     end;
-//   end;
-//   c.Free;
-//   Form1.ProgressBar.Position:=50;
-// end;
-
-// procedure CubieCube.InvUDSliceSortedCoord(w: Word);
-// var x: Word; order: array[0..3] of Integer; used: array[FR..BR] of Boolean;
-//     j,k,e: Edge; i,m: Integer;
-// begin
-//   x:= w mod 24;
-//   InvUDSliceCoord(w div 24);
-
-//   for j:= FR to BR do used[j]:=false;
-//   for i:= 0 to 3 do
-//   begin
-//     order[i]:= x mod (i+1);
-//     x:= x div (i+1);
-//   end;
-
-//   for i:= 3 downto 0 do
-//   begin
-//     k:=BR; while used[k] do Dec(k);
-//     while order[i]>0 do
-//     begin
-//       Dec(order[i]);
-//       repeat
-//        Dec(k);
-//       until not used[k];
-//     end;
-
-//     m:=-1;
-//     for j:= UR to BR do //search the i. UD-slice edge
-//     begin
-//       e:= PEdge^[j].e;
-//       if (e=FR) or (e=FL) or (e=BL) or (e=BR) then Inc(m);
-//       if m=i then
-//       begin
-//         PEdge^[j].e:=k;
-//         used[k]:=true;
-//         break;
-//       end;
-//     end;
-//   end;
-// end;
-
 void writeCPTable() {
     generateCPMoveTable();
 

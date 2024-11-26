@@ -8,7 +8,7 @@ bool validPair(int m1, int m2) {
 
 vector<int> solution = {};
 
-// TESTED AND CORRECCT
+// TESTED AND CORRECT
 int solvePhase1(int co, int togo) {
     if (co == 0) {
         return 0;
