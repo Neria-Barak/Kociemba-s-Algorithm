@@ -36,7 +36,7 @@ vector<vector<int>> readBinaryFile(string file, int size1, int size2) {
 
     inFile.close();
 
-    cout << "Table loaded successfully." << endl;
+    cout << file << " loaded successfully." << endl;
     return table;
 }
 

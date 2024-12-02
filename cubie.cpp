@@ -286,3 +286,9 @@ void CubieCube::applyScramble(vector<int> scramble) {
         this->move(scramble[i]);
     }
 }
+
+void CubieCube::undoScramble(vector<int> scramble) {
+    for (unsigned int i = 0; i < scramble.size(); i++) {
+        this->move(inv_move[scramble[i]]);
+    }
+}

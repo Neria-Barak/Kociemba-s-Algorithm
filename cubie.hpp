@@ -50,6 +50,7 @@ public:
     void InvUDSlice(int udsVal);
 
     void applyScramble(vector<int> scramble);
+    void undoScramble(vector<int> scramble);
 };
 
 // Combination function C(n, k)

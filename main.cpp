@@ -35,9 +35,10 @@ int main()
     CubieCube* cc = new CubieCube();
 
     vector<int> myScramble = generateScramble(11);
-    cout << ScrambleToString(myScramble) << endl;
+    // vector<int> myScramble = {F1M, R1M, U3M, R3M, U3M, R1M, U1M, R3M, F3M, R1M, U1M, R3M, U3M, R3M, F1M, R1M, F3M};
+    cout << "Scramble: " << ScrambleToString(myScramble) << endl;
     cc->applyScramble(myScramble);
 
-    vector<int> solution = solveCube(cc, 11);
-    cout << ScrambleToString(solution) << endl;
+    vector<int> solution = solveCube(cc, 12);
+    cout << "Solution: " << ScrambleToString(solution) << endl;
 }
