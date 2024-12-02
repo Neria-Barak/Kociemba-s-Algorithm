@@ -64,13 +64,6 @@ void phase2Start(CubieCube *cube)
 // TESTED AND CORRECT
 int solvePhase1(int co, int togo, CubieCube* cube)
 {
-    // if (co == 0)
-    // {
-    //     if (optimalSolution.size() > 0 && phases1.find(currentSolution) != phases1.end())
-    //         return 1;
-    //     phases1.insert(currentSolution);
-    //     return 0;
-    // }
     if (togo == 0 && co == 0)
     {
         vector<int> tempSolution = currentSolution;

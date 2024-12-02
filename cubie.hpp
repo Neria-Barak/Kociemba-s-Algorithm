@@ -43,11 +43,13 @@ public:
     int getEOCoord();
     int getCPCoord();
     int getCOCoord();
+    int getUDSOCoord();
     void InvEO(int eoVal);
     void InvCO(int coVal);
     void InvCP(int cpVal);
     void InvEP(int epVal);
     void InvUDSlice(int udsVal);
+    void InvUDSO(int udsoVal);
 
     void applyScramble(vector<int> scramble);
     void undoScramble(vector<int> scramble);

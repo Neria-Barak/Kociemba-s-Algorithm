@@ -7,6 +7,6 @@
 #include "defs.hpp"
 #include <vector>
 
-void buildTable(const string& name, int size, const vector<vector<int>>& move);
+void buildTable(const string& name, int size1, const vector<vector<int>>& move1, int size2, const vector<vector<int>>& move2);
 
 #endif

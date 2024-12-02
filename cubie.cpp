@@ -32,6 +32,20 @@ CubieCube::CubieCube()
     cc2 = new coordCubePhase2(this->cp, this->ep, this->ep);
 }
 
+// procedure EdgeMult(a,b:EdgeCubie; var prod:EdgeCubie);
+// var ed: Edge; ori:ShortInt;
+// begin
+//   for ed:=UR to BR do
+//   begin
+//     prod[ed].e:= a[b[ed].e].e;
+//     ori:= b[ed].o+a[b[ed].e].o;
+//     if ori=2 then ori:=0
+//     else if ori>=6 then ori:=6;//unknown orientation
+//     prod[ed].o:=ori;
+//   end;
+// end;
+
+// CHECKED AND PROBABLY CORRECT
 // Multiply edges
 void CubieCube::multiply_edge(CubieCube *other)
 {
@@ -89,6 +103,43 @@ void CubieCube::multiply_corner(CubieCube *other)
 
     cc1->setCornerOri(co);
     cc2->setCornerPerm(cp);
+}
+
+void CubieCube::InvUDSO(int udsoVal) {
+    this->cc1->uds = udsoVal;
+    std::array<bool, 12> occupied = {false};
+    int n = 11, k = 3;
+
+    // Determine the occupied edges based on the rank 'udsoVal'
+    while (k >= 0) {
+        int v = C(n, k);
+        if (udsoVal < v) {
+            --k;
+            occupied[n] = true;
+        } else {
+            udsoVal -= v;
+        }
+        --n;
+    }
+
+    // Assign edges
+    int udSliceEdge = FR; // Start with FR edge
+    for (int ed = UR; ed <= BR; ++ed) {
+        if (occupied[ed]) {
+            // Replace the edge in ep
+            for (int i = UR; i <= BR; ++i) {
+                if (this->ep[i] == udSliceEdge) {
+                    this->ep[i] = this->ep[ed];
+                    break;
+                }
+            }
+            this->ep[ed] = udSliceEdge;
+
+            if (udSliceEdge < BR) {
+                udSliceEdge++;
+            }
+        }
+    }
 }
 
 // 1*1! + 1*2! + 3*3! + 0*4! + 1*5! + 1*6! + 4*7! = 21021 -> {1, 1, 3, 0, 1, 1, 4} -> {DFR, UFL, ULB, URF, DRB, DLF, DBL, UBR}
@@ -238,25 +289,33 @@ void CubieCube::InvUDSlice(int udsVal)
 
 void CubieCube::move(int move)
 {
-    int index = move - (move % 3);
-    auto c = new CubieCube(new_corner_ori[index],
-                           new_corner_perm[index],
-                           new_edge_ori[index],
-                           new_edge_perm[index]);
+    // int index = move - (move % 3);
+    // auto c = new CubieCube(new_corner_ori[index],
+    //                        new_corner_perm[index],
+    //                        new_edge_ori[index],
+    //                        new_edge_perm[index]);
 
-    for (int i = 0; i <= (move % 3); i++)
-    {
-        this->multiply_corner(c);
-        this->multiply_edge(c);
-    }
+    // for (int i = 0; i <= (move % 3); i++)
+    // {
+    //     this->multiply_corner(c);
+    //     this->multiply_edge(c);
+    // }
+    auto c = new CubieCube(new_corner_ori[move],
+                           new_corner_perm[move],
+                           new_edge_ori[move],
+                           new_edge_perm[move]);
 
-    cc1->setCornerOri(co);
-    cc1->setEdgeOri(eo);
-    cc2->setCornerPerm(cp);
-    cc2->setEdgePerm(ep);
+    this->multiply_corner(c);
+    this->multiply_edge(c);
 
-    cc1->setUDSlicePhase1(ep);
-    cc2->setUDSlicePhase2(ep);
+
+    // cc1->setCornerOri(co);
+    // cc1->setEdgeOri(eo);
+    // cc2->setCornerPerm(cp);
+    // cc2->setEdgePerm(ep);
+
+    // cc1->setUDSlicePhase1(ep);
+    // cc2->setUDSlicePhase2(ep);
 }
 
 void CubieCube::multiply(CubieCube *b)
@@ -280,6 +339,10 @@ int CubieCube::getCPCoord()
 int CubieCube::getCOCoord() {
     return this->cc1->co;
 }
+int CubieCube::getUDSOCoord() {
+    return this->cc1->uds;
+}
+
 
 void CubieCube::applyScramble(vector<int> scramble) {
     for (unsigned int i=0; i<scramble.size(); i++) {

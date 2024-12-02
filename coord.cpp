@@ -46,6 +46,7 @@ void coordCubePhase1::setCornerOri(array<int, N_CORNERS> co)
     this->co = s;
 }
 
+// CHECKED AND PROBABLY CORRECT
 int coordCubePhase1::getUDSliceCoord(array<int, N_EDGES> ep)
 {
     array<bool, N_EDGES> occupied = {false};
@@ -65,13 +66,13 @@ int coordCubePhase1::getUDSliceCoord(array<int, N_EDGES> ep)
     {
         if (occupied[n])
         {
-            --k;
+            k--;
         }
         else
         {
             s += C(n, k);
         }
-        --n;
+        n--;
     }
     return s;
 }

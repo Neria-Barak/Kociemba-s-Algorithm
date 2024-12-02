@@ -43,12 +43,19 @@ vector<vector<int>> readBinaryFile(string file, int size1, int size2) {
 
 vector<vector<int>> coMoveTable;
 vector<vector<int>> cpMoveTable;
+vector<vector<int>> eoMoveTable;
 vector<vector<int>> coPrunTable;
 vector<vector<int>> cpPrunTable;
+vector<vector<int>> UDSOMoveTable;
 
 void init_tables() {
+    // Move Tables
     coMoveTable = readBinaryFile("MoveTables/coMoveTable", N_TWIST, N_MOVE);
     cpMoveTable = readBinaryFile("MoveTables/cpMoveTable", N_CORNERS_PERM, N_MOVE);
+    eoMoveTable = readBinaryFile("MoveTables/eoMoveTable", N_FLIP, N_MOVE);
+    UDSOMoveTable = readBinaryFile("MoveTables/udsoMoveTable", N_SLICE, N_MOVE);
+
+    // Pruning Tables
     coPrunTable = readBinaryFile("PruningTables/coPruningTable", N_TWIST, 1);
     cpPrunTable = readBinaryFile("PruningTables/cpPruningTable", N_CORNERS_PERM, 1);
 }

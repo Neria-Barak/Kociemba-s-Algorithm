@@ -11,5 +11,7 @@ void generateCOMoveTable();
 
 void writeCOTable();
 void writeCPTable();
+void writeEOTable();
+void writeUDSOTable();
 
 #endif
