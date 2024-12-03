@@ -99,21 +99,6 @@ coordCubePhase2::coordCubePhase2(array<int, N_CORNERS> cp, array<int, N_EDGES> e
     this->UDSliceCoordSorted(uds);
 }
 
-void coordCubePhase2::setEdgePerm(array<int, N_EDGES> ep)
-{
-    int x = 0;
-    for (int e1 = BR; e1 > UR; e1--)
-    {
-        int s = 0;
-        for (int e2 = e1 - 1; e2 >= UR; e2--)
-        {
-            if (ep[e2] > ep[e1])
-                s++;
-        }
-        x = (x + s) * e1;
-    }
-    this->ep = x;
-}
 void coordCubePhase2::setCornerPerm(array<int, N_CORNERS> cp)
 {
     int x = 0;
