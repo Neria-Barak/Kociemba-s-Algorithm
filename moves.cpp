@@ -12,9 +12,9 @@ using namespace std;
 // CentOriRFLBMod2Move: array[0..16-1,Ux1..Fsx3] of Word;
 // TetraMove: array[0..70-1,Ux1..Fsx3] of Word;
 // CornPermMove: array[0..40320-1,Ux1..Fsx3] of Word;          - DONE
-// UDSliceSortedMove: array[0..11880-1,Ux1..Fsx3] of Word;     - TODO
+// UDSliceSortedMove: array[0..11880-1,Ux1..Fsx3] of Word;     - DONE
 // UDSliceSortedSymMove: array[0..788-1,Ux1..Fsx3] of Integer;
-// Edge8PermMove: array[0..40320-1,Ux1..Fsx3] of Word;         - TODO
+// Edge8PermMove: array[0..40320-1,Ux1..Fsx3] of Word;         - DONE
 
 
 // TODO:
@@ -25,6 +25,32 @@ using namespace std;
 // edge4edge8Prun = prunTable["edge4edge8Prun",edge4Move,24,edge8Move,40320];  
 // edge4cornerPrun = prunTable["edge4cornerPrun",edge4Move,24,cornerMove,40320];
 
+
+array<array<int, N_MOVE>, N_PERM_4> udspMoveTable2;
+void generateUDSPMoveTable() {
+    CubieCube* c = new CubieCube();
+    for (int i = 0; i < N_PERM_4; i++) {
+        c->InvUDSP(i);
+        for (int j = U1M; j <= B3M; j++) {
+            c->move(j);
+            udspMoveTable2[i][j] = c->getUDSPCoord();
+            c->move(inv_move[j]);
+        }
+    }
+}
+
+array<array<int, N_MOVE>, N_UD_EDGES> ep8MoveTable2;
+void generateEP8MoveTable() {
+    CubieCube* c = new CubieCube();
+    for (int i = 0; i < N_UD_EDGES; i++) {
+        c->InvEP8(i);
+        for (int j = U1M; j <= B3M; j++) {
+            c->move(j);
+            ep8MoveTable2[i][j] = c->getEP8Coord();
+            c->move(inv_move[j]);
+        }
+    }
+}
 
 array<array<int, N_MOVE>, N_SLICE> UDSOMoveTable2;
 void generateUDSOMoveTable() {
@@ -165,6 +191,46 @@ void writeUDSOTable() {
         cerr << "Error writing to file." << endl;
     } else {
         cout << "udsoMoveTable successfully written to udsoMoveTable.bin" << endl;
+    }
+
+    outFile.close();
+}
+
+void writeEP8Table() {
+    generateEP8MoveTable();
+
+    ofstream outFile("MoveTables/ep8MoveTable.bin", ios::binary);
+    if (!outFile) {
+        cerr << "Error opening file for writing." << endl;
+        return;
+    }
+
+    outFile.write(reinterpret_cast<const char*>(ep8MoveTable2.data()), N_UD_EDGES * N_MOVE * sizeof(int));
+    
+    if (!outFile) {  // Verify that the write operation was successful
+        cerr << "Error writing to file." << endl;
+    } else {
+        cout << "ep8MoveTable successfully written to ep8MoveTable.bin" << endl;
+    }
+
+    outFile.close();
+}
+
+void writeUDSPTable() {
+    generateUDSPMoveTable();
+
+    ofstream outFile("MoveTables/udspMoveTable.bin", ios::binary);
+    if (!outFile) {
+        cerr << "Error opening file for writing." << endl;
+        return;
+    }
+
+    outFile.write(reinterpret_cast<const char*>(udspMoveTable2.data()), N_PERM_4 * N_MOVE * sizeof(int));
+    
+    if (!outFile) {  // Verify that the write operation was successful
+        cerr << "Error writing to file." << endl;
+    } else {
+        cout << "udspMoveTable successfully written to udspMoveTable.bin" << endl;
     }
 
     outFile.close();

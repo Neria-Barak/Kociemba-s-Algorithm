@@ -35,15 +35,13 @@ class coordCubePhase2
 {
 public:
     int cp;  // Corner Permutation Coordinate
-    int ep;  // Edge Permutation Coordinate
+    int ep8;  // Edge Permutation Coordinate
     int uds; // UDSlice Coordinate
 
     coordCubePhase2(int cp, int ep, int uds);
 
     // constructor
     coordCubePhase2(array<int, N_CORNERS> cp, array<int, N_EDGES> ep, array<int, N_EDGES> uds);
-
-    void setEdgePerm(array<int, N_EDGES> ep);
 
     void setCornerPerm(array<int, N_CORNERS> cp);
 
@@ -52,6 +50,10 @@ public:
     int getUDSliceCoord(array<int, N_EDGES> ep);
 
     int UDSliceCoordSorted(array<int, N_EDGES> ep);
+
+    void setEP8(array<int, N_EDGES> ep8);
+
+    void setUDS(array<int, N_EDGES> uds);
 };
 
 

@@ -62,7 +62,7 @@ void CubieCube::multiply_edge(CubieCube *other)
     eo = eoTemp;
 
     cc1->setEdgeOri(eo);
-    cc2->setEdgePerm(ep);
+    cc2->setEP8(ep);
 
     cc1->setUDSlicePhase1(ep);
     cc2->setUDSlicePhase2(ep);
@@ -212,9 +212,9 @@ void CubieCube::InvEO(int eoVal)
     this->eo[BR] = parity % 2;
 }
 
-void CubieCube::InvEP(int epVal)
-{
-    this->cc2->ep = epVal;
+void CubieCube::InvEP8(int epVal) {
+    this->cc2->ep8 = epVal;
+
     array<bool, N_EDGES> used;
     array<int, N_EDGES> order;
 
@@ -251,37 +251,76 @@ int C(int n, int k)
     return C(n - 1, k - 1) + C(n - 1, k);
 }
 
-void CubieCube::InvUDSlice(int udsVal)
-{
-    array<bool, N_EDGES> occupied;
-    for (int n = 0; n < N_EDGES; n++) {
-        n = 11;
-        int k = 3;
-        occupied[n] = false;
-        while (k >= 0) {
-            int v = C(n, k);
-            if (udsVal < v) {
+// void CubieCube::InvUDSP(int udsVal)
+// {
+//     array<bool, N_EDGES> occupied;
+//     for (int n = 0; n < N_EDGES; n++) {
+//         n = 11;
+//         int k = 3;
+//         occupied[n] = false;
+//         while (k >= 0) {
+//             int v = C(n, k);
+//             if (udsVal < v) {
+//                 k--;
+//                 occupied[n] = true;
+//             }
+//             else {
+//                 udsVal -= v;
+//             }
+//             n--;
+//         }
+//         int udSliceEdge = FR;
+//         for (int e = UR; e <= BR; e++) {
+//             if (occupied[e]) {
+//                 for (int i = UR; i <= BR; i++) {
+//                     if (this->ep[i] == udSliceEdge) {
+//                         this->ep[i] = this->ep[e];
+//                         break;
+//                     }
+//                     this->ep[e] = udSliceEdge;
+//                     if (udSliceEdge < BR) {
+//                         udSliceEdge++;
+//                     } 
+//                 }
+//             }
+//         }
+//     }
+// }
+
+void CubieCube::InvUDSP(int udsVal) {
+    array<int, 12> used;
+    array<int, 4> order;
+    int x = udsVal;
+    // remember for debug x = w mod 24?
+    for (int j = FR; j <= BR; j++) {
+        used[j] = false;
+    }
+    for (int i = 0; i <= 3; i++) {
+        order[i] = x % (i+1);
+        x /= i + 1;
+    }
+
+    for (int i = 3; i >= 0; i--) {
+        int k = BR;
+        while (used[k]) k--;
+        while(order[i] > 0) {
+            order[i]--;
+            do {
                 k--;
-                occupied[n] = true;
-            }
-            else {
-                udsVal -= v;
-            }
-            n--;
+            } while(used[k]);
         }
-        int udSliceEdge = FR;
-        for (int e = UR; e <= BR; e++) {
-            if (occupied[e]) {
-                for (int i = UR; i <= BR; i++) {
-                    if (this->ep[i] == udSliceEdge) {
-                        this->ep[i] = this->ep[e];
-                        break;
-                    }
-                    this->ep[e] = udSliceEdge;
-                    if (udSliceEdge < BR) {
-                        udSliceEdge++;
-                    } 
-                }
+        
+        int m = -1;
+        for (int j = UR; j <= BR; j++) {
+            // debug why use ep???
+            int e = this->ep[j];
+            if (e == FR || e == FL || e == BL || e == BR) {
+                m++;
+            }
+            if (m == i) {
+                this->ep[j] = k;
+                used[k] = true;
+                break;
             }
         }
     }
@@ -325,9 +364,9 @@ void CubieCube::multiply(CubieCube *b)
 }
 
 // Get corner orientation coordinate
-int CubieCube::getEPCoord()
+int CubieCube::getEP8Coord()
 {
-    return this->cc2->ep;
+    return this->cc2->ep8;
 }
 int CubieCube::getEOCoord() {
     return this->cc1->eo;
@@ -341,6 +380,9 @@ int CubieCube::getCOCoord() {
 }
 int CubieCube::getUDSOCoord() {
     return this->cc1->uds;
+}
+int CubieCube::getUDSPCoord() {
+    return this->cc2->uds;
 }
 
 
@@ -403,7 +445,7 @@ std::string CubieCube::toString() {
     result += "Phase 1 UDSlice (cc1->uds): " + std::to_string(cc1->uds) + "\n";
     result += "Phase 2 UDSlice (cc2->uds): " + std::to_string(cc2->uds) + "\n";
     result += "Phase 1 Edge Orientation (cc1->eo): " + std::to_string(cc1->eo) + "\n";
-    result += "Phase 2 Edge Permutation (cc2->ep): " + std::to_string(cc2->ep) + "\n";
+    result += "Phase 2 Edge Permutation (cc2->ep): " + std::to_string(cc2->ep8) + "\n";
     result += "Phase 1 Corner Orientation (cc1->co): " + std::to_string(cc1->co) + "\n";
     result += "Phase 2 Corner Permutation (cc2->cp): " + std::to_string(cc2->cp) + "\n";
 

@@ -13,5 +13,7 @@ void writeCOTable();
 void writeCPTable();
 void writeEOTable();
 void writeUDSOTable();
+void writeEP8Table();
+void writeUDSPTable();
 
 #endif

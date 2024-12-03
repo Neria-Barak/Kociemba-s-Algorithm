@@ -56,6 +56,8 @@ vector<vector<int>> coMoveTable;
 vector<vector<int>> cpMoveTable;
 vector<vector<int>> eoMoveTable;
 vector<vector<int>> UDSOMoveTable;
+vector<vector<int>> UDSPMoveTable;
+vector<vector<int>> ep8MoveTable;
 
 // vector<vector<int>> coPrunTable;
 // vector<vector<int>> cpPrunTable;
@@ -70,6 +72,9 @@ void init_tables() {
     cpMoveTable = readBinaryFile("MoveTables/cpMoveTable", N_CORNERS_PERM, N_MOVE);
     eoMoveTable = readBinaryFile("MoveTables/eoMoveTable", N_FLIP, N_MOVE);
     UDSOMoveTable = readBinaryFile("MoveTables/udsoMoveTable", N_SLICE, N_MOVE);
+
+    UDSPMoveTable = readBinaryFile("MoveTables/udspMoveTable", N_PERM_4, N_MOVE);
+    ep8MoveTable = readBinaryFile("MoveTables/ep8MoveTable", N_UD_EDGES, N_MOVE);
 
     // Pruning Tables
     sliceFlipPrunTable = readBinaryFile("PruningTables/sliceFlipPrun", N_SLICE, N_FLIP);

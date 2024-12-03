@@ -39,19 +39,19 @@ public:
     void multiply(CubieCube* b);
     void InverseEP(int co);
     void move(int move);
-    int getEPCoord();
+    int getEP8Coord();
     int getEOCoord();
     int getCPCoord();
     int getCOCoord();
     string toString();
     int getUDSOCoord();
+    int getUDSPCoord();
     void InvEO(int eoVal);
     void InvCO(int coVal);
     void InvCP(int cpVal);
-    void InvEP(int epVal);
-    void InvUDSlice(int udsVal);
+    void InvEP8(int epVal);
+    void InvUDSP(int udsVal);    
     void InvUDSO(int udsoVal);
-
     void applyScramble(vector<int> scramble);
     void undoScramble(vector<int> scramble);
 };

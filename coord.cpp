@@ -83,18 +83,18 @@ void coordCubePhase1::setUDSlicePhase1(array<int, N_EDGES> ep)
 }
 // constructor
 coordCubePhase2::coordCubePhase2(int cp,
-                                 int ep,
+                                 int ep8,
                                  int uds)
 {
 
     this->cp = cp;
-    this->ep = ep;
+    this->ep8 = ep8;
     this->uds = uds;
 }
 
 coordCubePhase2::coordCubePhase2(array<int, N_CORNERS> cp, array<int, N_EDGES> ep, array<int, N_EDGES> uds)
 {
-    this->setEdgePerm(ep);
+    this->setEP8(ep);
     this->setCornerPerm(cp);
     this->UDSliceCoordSorted(uds);
 }
@@ -150,4 +150,47 @@ int coordCubePhase2::UDSliceCoordSorted(array<int, N_EDGES> ep)
 void coordCubePhase2::setUDSlicePhase2(array<int, N_EDGES> ep)
 {
     this->uds = UDSliceCoordSorted(ep) % 24;
+}
+
+void coordCubePhase2::setEP8(array<int, N_EDGES> ep8)
+{
+    int x = 0;
+    for (int i = DB; i > UR; i--)
+    {
+        int s = 0;
+        for (int j = i - 1; j >= UR; j--)
+        {
+            if (ep8[j] > ep8[i])
+                s++;
+        }
+        x = (x + s) * i;
+    }
+    this->ep8 = x;
+}
+
+void coordCubePhase2::setUDS(array<int, N_EDGES> uds)
+{
+    int j = 0;
+    array<int, 4> arr;
+    for (int i = UR; i <= BR; i++)
+    {
+        int e = uds[i];
+        if (e == FR || e == BL || e == BR) {
+            arr[j] = e;
+            j++;
+        }
+    }
+    int x = 0;
+    for (j = 3; j >= 1; j--) {
+        int s = 0;
+        for (int k = j-1; k >= 0; k--) {
+            if(arr[k] > arr[j]) {
+                s++;
+            }
+        }
+        x = (x+s)*j;
+    }
+    // for when we have bugs remember this:
+    // this->uds = getUDSliceCoord(this->ep)*24+x;
+    this->uds = x;
 }

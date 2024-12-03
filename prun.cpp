@@ -76,8 +76,8 @@ void buildTable(const string &name, int size1, const vector<vector<int>> &move1,
     }
     
     // Write the dimensions of the 2D vector for reconstruction
-    size_t rows = p.size();
-    size_t cols = rows > 0 ? p[0].size() : 0;
+    // size_t rows = p.size();
+    // size_t cols = rows > 0 ? p[0].size() : 0;
     // outFile.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
     // outFile.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
 
