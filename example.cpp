@@ -17,7 +17,6 @@ void readBinaryFile() {
 
     // Read the entire std::array from the binary file
     inFile.read(reinterpret_cast<char*>(coMoveTable.data()), N_CORNERS * N_MOVE * sizeof(int));
-
     inFile.close();
 }
 

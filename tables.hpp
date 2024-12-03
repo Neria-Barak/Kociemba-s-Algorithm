@@ -16,10 +16,11 @@
 
 extern vector<vector<int>> coMoveTable;
 extern vector<vector<int>> cpMoveTable;
-extern vector<vector<int>> coPrunTable;
-extern vector<vector<int>> cpPrunTable;
 extern vector<vector<int>> eoMoveTable;
 extern vector<vector<int>> UDSOMoveTable;
+
+extern vector<vector<int>> sliceFlipPrunTable;
+extern vector<vector<int>> sliceTwistPrunTable;
 
 void init_tables();
 

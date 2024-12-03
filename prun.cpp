@@ -50,12 +50,15 @@ void buildTable(const string &name, int size1, const vector<vector<int>> &move1,
                     {
                         int i1 = move1[i][move];
                         int i2 = move2[j][move];
-                        if (depth == 6) cout << p[i1][i2] << endl;
+                        // if (depth == 6) cout << p[i1][i2] << endl;
                         if (i1 >= 0 && i1 < size1 && i2 >= 0 && i2 < size2 && p[i1][i2] == -1)
                         {
                             count++;
                             p[i1][i2] = depth + 1;
                         }
+                        // else if (i1 == 288 && i2 == 577) {
+                        //     cout << i << " " << j << " " << move << endl;
+                        // }
                     }
                 }
             }
@@ -75,8 +78,8 @@ void buildTable(const string &name, int size1, const vector<vector<int>> &move1,
     // Write the dimensions of the 2D vector for reconstruction
     size_t rows = p.size();
     size_t cols = rows > 0 ? p[0].size() : 0;
-    outFile.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
-    outFile.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
+    // outFile.write(reinterpret_cast<const char*>(&rows), sizeof(rows));
+    // outFile.write(reinterpret_cast<const char*>(&cols), sizeof(cols));
 
     // Flatten and write the data
     for (const auto& row : p) {

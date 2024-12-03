@@ -34,7 +34,7 @@ void reBuildPruningTables()
 {
     // buildTable("PruningTables/coPruningTable", N_TWIST, coMoveTable);
     // buildTable("PruningTables/cpPruningTable", N_CORNERS_PERM, cpMoveTable);
-    // buildTable("PruningTables/sliceTwistPrun", N_SLICE, UDSOMoveTable, N_TWIST, coMoveTable);
+    buildTable("PruningTables/sliceTwistPrun", N_SLICE, UDSOMoveTable, N_TWIST, coMoveTable);
     buildTable("PruningTables/sliceFlipPrun", N_SLICE, UDSOMoveTable, N_FLIP, eoMoveTable);
 
 }
@@ -43,24 +43,16 @@ int main()
 {
     init();
     // writeEOTable();
-    reBuildPruningTables();
-    // CubieCube* cc = new CubieCube();
-    // cout << cc->getEOCoord() << endl;
-    // cout << eoMoveTable[1043][U3M] << endl;
-    
-    
-    // cout << UDSOMoveTable[227][U3M] << endl;;
-    // int i = 311;
-    // cc->InvEO(i);
-    // cout << cc->getEOCoord() << endl;
-    
-    
+    // reBuildPruningTables();
 
-    // vector<int> myScramble = generateScramble(11);
-    // // vector<int> myScramble = {F1M, R1M, U3M, R3M, U3M, R1M, U1M, R3M, F3M, R1M, U1M, R3M, U3M, R3M, F1M, R1M, F3M};
-    // cout << "Scramble: " << ScrambleToString(myScramble) << endl;
-    // cc->applyScramble(myScramble);
 
-    // vector<int> solution = solveCube(cc, 12);
-    // cout << "Solution: " << ScrambleToString(solution) << endl;
+    CubieCube* cc = new CubieCube();
+    
+    vector<int> myScramble = generateScramble(20);
+    // vector<int> myScramble = {R3M};
+    cout << "Scramble: " << ScrambleToString(myScramble) << endl;
+    cc->applyScramble(myScramble);
+
+    vector<int> solution = solveCube(cc, 20);
+    cout << "Solution: " << ScrambleToString(solution) << endl;
 }

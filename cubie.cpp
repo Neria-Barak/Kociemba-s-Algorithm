@@ -207,7 +207,7 @@ void CubieCube::InvEO(int eoVal)
     {
         parity += eoVal % 2;
         this->eo[e] = eoVal % 2;
-        e /= 2;
+        eoVal /= 2;
     }
     this->eo[BR] = parity % 2;
 }
@@ -354,4 +354,58 @@ void CubieCube::undoScramble(vector<int> scramble) {
     for (unsigned int i = 0; i < scramble.size(); i++) {
         this->move(inv_move[scramble[i]]);
     }
+}
+
+std::string CubieCube::toString() {
+    std::string result;
+
+    // Corner Orientation
+    result += "Corner Orientation (co): [";
+    for (size_t i = 0; i < co.size(); ++i) {
+        result += std::to_string(co[i]);
+        if (i < co.size() - 1) {
+            result += ", ";
+        }
+    }
+    result += "]\n";
+
+    // Corner Permutation
+    result += "Corner Permutation (cp): [";
+    for (size_t i = 0; i < cp.size(); ++i) {
+        result += std::to_string(cp[i]);
+        if (i < cp.size() - 1) {
+            result += ", ";
+        }
+    }
+    result += "]\n";
+
+    // Edge Orientation
+    result += "Edge Orientation (eo): [";
+    for (size_t i = 0; i < eo.size(); ++i) {
+        result += std::to_string(eo[i]);
+        if (i < eo.size() - 1) {
+            result += ", ";
+        }
+    }
+    result += "]\n";
+
+    // Edge Permutation
+    result += "Edge Permutation (ep): [";
+    for (size_t i = 0; i < ep.size(); ++i) {
+        result += std::to_string(ep[i]);
+        if (i < ep.size() - 1) {
+            result += ", ";
+        }
+    }
+    result += "]\n";
+
+    // Phase 1 and Phase 2 Coordinates
+    result += "Phase 1 UDSlice (cc1->uds): " + std::to_string(cc1->uds) + "\n";
+    result += "Phase 2 UDSlice (cc2->uds): " + std::to_string(cc2->uds) + "\n";
+    result += "Phase 1 Edge Orientation (cc1->eo): " + std::to_string(cc1->eo) + "\n";
+    result += "Phase 2 Edge Permutation (cc2->ep): " + std::to_string(cc2->ep) + "\n";
+    result += "Phase 1 Corner Orientation (cc1->co): " + std::to_string(cc1->co) + "\n";
+    result += "Phase 2 Corner Permutation (cc2->cp): " + std::to_string(cc2->cp) + "\n";
+
+    return result;
 }

@@ -36,6 +36,17 @@ vector<vector<int>> readBinaryFile(string file, int size1, int size2) {
 
     inFile.close();
 
+
+    // // Print the first 3 lines of the table
+    // cout << "First 3 lines of the table:" << endl;
+    // for (int i = 0; i < min(3, size1); ++i) { // Ensure we don't go out of bounds
+    //     for (int j = 0; j < size2; ++j) {
+    //         cout << table[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+
     cout << file << " loaded successfully." << endl;
     return table;
 }
@@ -44,9 +55,14 @@ vector<vector<int>> readBinaryFile(string file, int size1, int size2) {
 vector<vector<int>> coMoveTable;
 vector<vector<int>> cpMoveTable;
 vector<vector<int>> eoMoveTable;
-vector<vector<int>> coPrunTable;
-vector<vector<int>> cpPrunTable;
 vector<vector<int>> UDSOMoveTable;
+
+// vector<vector<int>> coPrunTable;
+// vector<vector<int>> cpPrunTable;
+vector<vector<int>> sliceFlipPrunTable;
+vector<vector<int>> sliceTwistPrunTable;
+
+
 
 void init_tables() {
     // Move Tables
@@ -56,6 +72,6 @@ void init_tables() {
     UDSOMoveTable = readBinaryFile("MoveTables/udsoMoveTable", N_SLICE, N_MOVE);
 
     // Pruning Tables
-    coPrunTable = readBinaryFile("PruningTables/coPruningTable", N_TWIST, 1);
-    cpPrunTable = readBinaryFile("PruningTables/cpPruningTable", N_CORNERS_PERM, 1);
+    sliceFlipPrunTable = readBinaryFile("PruningTables/sliceFlipPrun", N_SLICE, N_FLIP);
+    sliceTwistPrunTable = readBinaryFile("PruningTables/sliceTwistPrun", N_SLICE, N_TWIST);
 }

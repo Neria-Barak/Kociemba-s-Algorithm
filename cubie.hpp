@@ -43,6 +43,7 @@ public:
     int getEOCoord();
     int getCPCoord();
     int getCOCoord();
+    string toString();
     int getUDSOCoord();
     void InvEO(int eoVal);
     void InvCO(int coVal);

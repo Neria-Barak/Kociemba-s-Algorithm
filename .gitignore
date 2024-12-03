@@ -1,6 +1,8 @@
 CubiCube.pas
+CoordCube.pas
 build/
 TwoPhase.m
 test.exe
 main.exe
 Rubiks2x2x2-OptimalSolver/
+cube-solver/
